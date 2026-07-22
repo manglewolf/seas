@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>7th Sea Dice Roller</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7th Sea</h1>
+        <p class="subtitle">Dice Roller</p>
+        
+        <div class="dice-count">
+            <label for="diceNum">Number of d10s:</label>
+            <div class="stepper">
+                <button id="decrease">−</button>
+                <span id="diceNum">10</span>
+                <button id="increase">+</button>
+            </div>
+        </div>
+
+        <button id="rollBtn" class="roll-button">Roll Dice</button>
+
+        <div id="results" class="results hidden">
+            <div class="rolls-section">
+                <h2>Rolls</h2>
+                <div id="diceDisplay" class="dice-grid"></div>
+            </div>
+
+            <div class="raises-section">
+                <h2>Raises: <span id="raiseCount">0</span></h2>
+                <div id="raisesDisplay"></div>
+            </div>
+
+            <div id="traitorsSection" class="traitors-section hidden">
+                <h2>Traitors</h2>
+                <div id="traitorsDisplay" class="traitors"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
