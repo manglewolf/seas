@@ -25,7 +25,37 @@ increaseBtn.addEventListener('click', () => {
     }
 });
 
-rollBtn.addEventListener('click', rollDice);
+let currentDice = [];
+const selected = new Set();
+
+rollBtn.addEventListener('click', () => {
+    if (selected.size > 0) {
+        rerollSelected();
+    } else {
+        rollDice();
+    }
+});
+
+diceDisplayEl.addEventListener('click', e => {
+    const el = e.target.closest('.die.selectable');
+    if (!el) return;
+    const i = Number(el.dataset.index);
+    if (selected.has(i)) selected.delete(i);
+    else selected.add(i);
+    el.classList.toggle('selected');
+    updateRollButton();
+});
+
+function updateRollButton() {
+    rollBtn.textContent = selected.size > 0 ? 'Reroll Selected' : 'Roll Dice';
+}
+
+function rerollSelected() {
+    selected.forEach(i => { currentDice[i] = roll_d10(); });
+    selected.clear();
+    updateRollButton();
+    renderDice();
+}
 
 function roll_d10() {
     return Math.floor(Math.random() * 10) + 1;
@@ -80,10 +110,19 @@ function getCombinations(arr, r) {
 }
 
 function rollDice() {
-    const dice = Array.from({ length: diceCount }, roll_d10);
+    currentDice = Array.from({ length: diceCount }, roll_d10);
+    selected.clear();
+    updateRollButton();
+    renderDice();
+}
 
-    diceDisplayEl.innerHTML = dice.map(d => 
-        `<div class="die">${d}</div>`
+function renderDice() {
+    const dice = currentDice;
+
+    diceDisplayEl.innerHTML = dice.map((d, i) => 
+        d === 10
+            ? `<div class="die">${d}</div>`
+            : `<div class="die selectable" data-index="${i}">${d}</div>`
     ).join('');
 
     const groups = [];
