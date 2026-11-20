@@ -1,0 +1,38 @@
+name: Build and Deploy via SFTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Remove or comment out the next 3 steps if your app has no package.json / build step
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps # Explicit FTP over TLS (usually port 21)
+          port: ${{ secrets.FTP_PORT }} # Optional: defaults to 21 for ftps, or 990 if using ftps-legacy
+          local-dir: ./dist/ # Note: must end with a trailing slash (use ./ if deploying root files)
+          server-dir: / # Target directory on your FTP server (must end with a trailing slash)
