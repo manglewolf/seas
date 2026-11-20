@@ -32,6 +32,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          security: loose # required for mismatched scert
           protocol: ftps # Explicit FTP over TLS (usually port 21)
           port: ${{ secrets.FTP_PORT }} # Optional: defaults to 21 for ftps, or 990 if using ftps-legacy
           local-dir: ./dist/ # Note: must end with a trailing slash (use ./ if deploying root files)
